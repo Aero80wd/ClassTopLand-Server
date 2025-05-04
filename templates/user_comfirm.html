@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}账号验证 - {{ user.name }}{% endblock %}
+{% block page_content %}
+<div class="page_header">
+    <h1>您好，{{ user.name }}!</h1>
+    <h2>你的账号马上就要验证完成了</h2>
+</div>
+<div class="page_content">
+    <p>请点击下方按钮，即可验证完毕</p>
+    {{ quick_form(form) }}
+</div>
+{% endblock %}
