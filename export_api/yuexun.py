@@ -28,7 +28,9 @@ def get_token():
 def get_classtable():
     data = request.get_json()
     class_id = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireFamilyStudentListAccount.json",data={"sessionUuid":data["token"]}).json()["datas"][0]["classId"]
-    cur_week = requests.post("https://www.yuexunedu.com/store/api/v2.0/inquireSchoolWeekInfoTenant.json",data={"sessionUuid":data["token"]}).json()["datas"][0]["currWeek"]
+    cur_sem = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireCurrentSemester.json",data={"sessionUuid":data["token"]}).json()
+    print(cur_sem)
+    cur_week = (datetime.now() - datetime.strptime(cur_sem["datas"][0]["startDate"],"%Y-%m-%d")).days / 7
     ct_req = requests.post("https://www.yuexunedu.com/store/api/v2.0/inquireGSStudentCourseListAccount.json",data={
         "sessionUuid":data["token"],
         "classId":class_id,

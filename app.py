@@ -6,13 +6,13 @@ from views import bp,mail
 from userviews import userviews
 import os
 import uuid
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap5
 from export_api import yuexun
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASEDIR, 'main.db')
 app.config["SECRET_KEY"] = uuid.uuid4().hex
-bootstrap = Bootstrap(app)
+bootstrap = Bootstrap5(app)
 app.config['MAIL_SERVER']='smtp.126.com'
 app.config['MAIL_PORT'] = 465
 app.config["MAIL_USE_SSL"] = True

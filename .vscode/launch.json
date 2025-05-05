@@ -12,7 +12,9 @@
             "args": [
                 "run",
                 "--no-debugger",
-                "--no-reload"
+                "--no-reload",
+                "--port=8765",
+                "--debug"
             ],
             "jinja": true,
             "autoStartBrowser": false
