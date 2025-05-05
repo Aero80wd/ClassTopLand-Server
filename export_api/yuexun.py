@@ -23,26 +23,30 @@ def get_token():
         "accountIdentityEnum":"2",
         "sessionUuid":""
     })
+    family_inf = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireFamilyStudentListAccount.json",data={"sessionUuid":data["token"]}).json()
+    requests.post("https://www.yuexunedu.com/store/api/v1.0/selectFamilyStudent.json",data={"sessionUuid":data["token"],
+                                                                                        "familyStudentId":family_inf["datas"][0]["familyStudentId"]})
     return {"token":login_req.json()["datas"][0]["sessionUuid"]}
 @yuexun.route("/get_classtable",methods=["POST"])
 def get_classtable():
     data = request.get_json()
-    class_id = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireFamilyStudentListAccount.json",data={"sessionUuid":data["token"]}).json()["datas"][0]["classId"]
-    cur_sem = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireCurrentSemester.json",data={"sessionUuid":data["token"]}).json()
-    print(cur_sem)
-    cur_week = (datetime.now() - datetime.strptime(cur_sem["datas"][0]["startDate"],"%Y-%m-%d")).days / 7
+    class_id = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireFamilyStudentListAccount.json",data={"sessionUuid":data["token"]}).json()
+    print(class_id)
+
+    class_id=class_id["datas"][0]["classId"]
+    cur_week = requests.post("https://www.yuexunedu.com/store/api/v2.0/inquireSchoolWeekInfoTenant.json",data={"sessionUuid":data["token"]}).json()["datas"][0]["currWeek"]
     ct_req = requests.post("https://www.yuexunedu.com/store/api/v2.0/inquireGSStudentCourseListAccount.json",data={
         "sessionUuid":data["token"],
         "classId":class_id,
         "weekIndex":cur_week
     })
-    ct_data = ct_req.json()["datas"][0]["courseList"]
+    ct_data = ct_req.json()["datas"]
     ct = {"Mon":[],"Tue":[],"Wed":[],"Thu":[],"Fri":[],"Sat":[],"Sun":[]}
     for i in ct_data: # 第i节课
-        for j in i: #星期几
+        for j in i["courseList"]: #星期几
             courseTime = datetime.strptime(j["courseDay"],"%Y-%m-%d").strftime("%a") #星期几
             course = j["stuSectionCourseOutputList"][0]
-            courseName = course["courseName"] #课程名
+            courseName = course["realCourseName"] #课程名
             startTime = course["startTime"] #开始时间
             endTime = course["endTime"] #结束时间
             ct[courseTime].append({

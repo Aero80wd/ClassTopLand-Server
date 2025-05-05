@@ -7,7 +7,7 @@ from userviews import userviews
 import os
 import uuid
 from flask_bootstrap import Bootstrap5
-from export_api import yuexun
+from export_api import yuexun,export_api
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASEDIR, 'main.db')
@@ -26,6 +26,7 @@ mail.init_app(app)
 app.register_blueprint(bp)
 app.register_blueprint(userviews,url_prefix="/web/v1")
 app.register_blueprint(yuexun,url_prefix="/exapi/yuexun")
+app.register_blueprint(export_api,url_prefix="/exapi")
 print("""   ____  _                  _____              _                       _ 
   / ___|| |  __ _  ___  ___|_   _|___   _ __  | |     __ _  _ __    __| |
  | |    | | / _` |/ __|/ __| | | / _ \ | '_ \ | |    / _` || '_ \  / _` |
