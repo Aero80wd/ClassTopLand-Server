@@ -23,8 +23,9 @@ def get_token():
         "accountIdentityEnum":"2",
         "sessionUuid":""
     })
-    family_inf = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireFamilyStudentListAccount.json",data={"sessionUuid":data["token"]}).json()
-    requests.post("https://www.yuexunedu.com/store/api/v1.0/selectFamilyStudent.json",data={"sessionUuid":data["token"],
+    print(login_req.json())
+    family_inf = requests.post("https://www.yuexunedu.com/store/api/v1.0/inquireFamilyStudentListAccount.json",data={"sessionUuid":login_req.json()["datas"][0]["sessionUuid"]}).json()
+    requests.post("https://www.yuexunedu.com/store/api/v1.0/selectFamilyStudent.json",data={"sessionUuid":login_req.json()["datas"][0]["sessionUuid"],
                                                                                         "familyStudentId":family_inf["datas"][0]["familyStudentId"]})
     return {"token":login_req.json()["datas"][0]["sessionUuid"]}
 @yuexun.route("/get_classtable",methods=["POST"])

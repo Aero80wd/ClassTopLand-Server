@@ -36,4 +36,4 @@ print("""   ____  _                  _____              _                       
                             Powered By Aero8m""")
 if __name__ == '__main__':
     
-    app.run(debug=True,host="0.0.0.0",port=8765)
+    app.run(host="0.0.0.0",port=8765)
